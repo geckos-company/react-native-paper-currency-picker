@@ -1,6 +1,6 @@
 {
-  "name": "react-native-currency-picker",
-  "version": "1.0.5",
+  "name": "react-native-paper-currency-picker",
+  "version": "1.0.6",
   "author": "Alien",
   "license": "MIT",
   "description": "React native library country picker",
@@ -11,6 +11,7 @@
   },
   "keywords": [
     "react-native",
+    "react-native-paper",
     "android",
     "IOS",
     "library",
@@ -22,19 +23,21 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/alien9996/react-native-currency-picker.git"
+    "url": "https://github.com/geckos-company/react-native-paper-currency-picker.git"
   },
   "bugs": {
-    "url": "https://github.com/alien9996/react-native-currency-picker.git/issues"
+    "url": "https://github.com/geckos-company/react-native-paper-currency-picker.git/issues"
   },
-  "homepage": "https://github.com/alien9996/react-native-currency-picker.git#readme",
+  "homepage": "https://github.com/geckos-company/react-native-paper-currency-picker.git#readme",
   "peerDependencies": {
-    "react-native": "^0.41.2",
-    "react-native-windows": "0.41.0-rc.1"
+    "react": "*",
+    "react-native": "*",
+    "react-native-paper": "*"
   },
   "dependencies": {
     "fuse.js": "^6.4.1",
     "react-native-auto-height-image": "^3.2.3",
+    "react-native-paper": "^5.12.0",
     "react-native-status-bar-height": "^2.5.0"
   },
   "devDependencies": {

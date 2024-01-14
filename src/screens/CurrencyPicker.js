@@ -1,128 +1,218 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Modal } from 'react-native';
-import { Styles } from '../styles';
-import dataCurrency from "../constants/CommonCurrency.json";
-import { DialogCurrency } from '../components';
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, TouchableOpacity, Modal } from "react-native";
+import { TextInput, Text } from "react-native-paper";
+import { Styles } from "../styles";
+import currencies from "../constants/currency.json";
+import { DialogCurrency } from "../components";
 import { CurrencyFlag } from "../components/CurrencyFlag";
 
 export const CurrencyPicker = (props) => {
+  const {
+    onSelectCurrency,
+    currencyCode,
+    showFlag = true,
+    showCurrencyName = true,
+    showSymbol = false,
+    showNativeSymbol = true,
+    darkMode = true,
+    renderChildren,
+    showCurrencyCode = false,
 
-    const currencies = Object.values(dataCurrency);
+    currencyPickerRef,
+    enable = true,
+    onOpen,
+    onClose,
 
-    const [currencyName, setCurrencyName] = useState("US Dollar");
-    const [code, setCode] = useState("USD");
-    const [symbol, setSymbol] = useState("$");
-    const [symbolNative, setSymbolNative] = useState("$");
-    const [visible, setVisible] = useState(false);
+    containerStyle = {},
+    modalStyle = {},
 
-    const {
-        onSelectCurrency,
-        currencyCode,
-        showFlag = true,
-        showCurrencyName = true,
-        showSymbol = false,
-        showNativeSymbol = true,
-        darkMode = true,
-        renderChildren,
-        showCurrencyCode = true,
+    language = "en",
 
-        currencyPickerRef,
-        enable = true,
-        onOpen,
-        onClose,
+    mode = "outlined",
+    label,
+    title,
+    searchPlaceholder,
+    textEmpty,
+    showCloseButton = true,
+    showModalTitle = true,
+  } = props;
 
-        containerStyle = {},
-        modalStyle = {},
+  const [currencyName, setCurrencyName] = useState(
+    currencies["USD"]["name"][language]
+  );
+  const [code, setCode] = useState("USD");
+  const [symbol, setSymbol] = useState("$");
+  const [symbolNative, setSymbolNative] = useState("$");
+  const [visible, setVisible] = useState(false);
 
-        title,
-        searchPlaceholder,
-        textEmpty,
-        showCloseButton = true,
-        showModalTitle = true,
-    } = props;
+  const {
+    container,
+    flagWidth = 25,
+    currencyCodeStyle,
+    currencyNameStyle,
+    symbolStyle,
+    symbolNativeStyle,
+  } = containerStyle;
 
-    const { container, flagWidth = 25, currencyCodeStyle, currencyNameStyle, symbolStyle, symbolNativeStyle } = containerStyle;
+  useEffect(() => {
+    let currency = undefined;
+    currencyPickerRef && currencyPickerRef(currencyRef);
 
-    useEffect(() => {
-        let currency = undefined;
-        currencyPickerRef && currencyPickerRef(currencyRef);
+    if (currencyCode) {
+      currency = Object.values(currencies).filter(
+        (item) => item.code === currencyCode
+      )[0];
+    }
 
-        if (currencyCode) {
-            currency = currencies.filter(item => item.code === currencyCode)[0];
-        }
+    if (currency) {
+      const { code, symbol, symbol_native, name } = currency;
+      setCurrencyName(name[language]);
+      setCode(code);
+      setSymbol(symbol);
+      setSymbolNative(symbol_native);
+    }
+  }, [props]);
 
-        if (currency) {
-            const { code, symbol, symbol_native, name } = currency;
-            setCurrencyName(name);
-            setCode(code);
-            setSymbol(symbol);
-            setSymbolNative(symbol_native);
-        }
-    }, [props]);
+  const currencyRef = {
+    open: () => {
+      setVisible(true);
+      onOpen && onOpen();
+    },
+    close: () => {
+      setVisible(false);
+      onClose && onClose();
+    },
+  };
 
-    const currencyRef = {
-        open: () => {
-            setVisible(true);
-            onOpen && onOpen();
-        },
-        close: () => {
-            setVisible(false);
+  const onSelect = (data) => {
+    const { code, symbol, symbol_native, name } = data;
+    onSelectCurrency && onSelectCurrency(data);
+    setCurrencyName(name[language]);
+    setCode(code);
+    setSymbol(symbol);
+    setSymbolNative(symbol_native);
+  };
+
+  return (
+    <View style={[{ width: "100%" }, container]}>
+      {enable ? (
+        renderChildren ? (
+          renderChildren
+        ) : (
+          <TextInput
+            value={code}
+            label={label}
+            mode={mode}
+            showSoftInputOnFocus={false}
+            editable={false}
+            right={
+              <TextInput.Icon
+                icon={visible ? "chevron-up" : "chevron-down"}
+                onPress={() => setVisible(!visible)}
+              />
+            }
+            render={(props) => {
+              // console.log(props);
+              return (
+                <TouchableOpacity
+                  onPress={() => setVisible(!visible)}
+                  style={[
+                    ...props.style,
+                    {
+                      flexDirection: "row",
+                      alignItems: "center",
+                      flex: 1,
+                    },
+                  ]}
+                >
+                  {showFlag && (
+                    <CurrencyFlag currency={code} width={flagWidth} />
+                  )}
+                  {showCurrencyCode && (
+                    <Text
+                      style={[
+                        styles.txtCurrencyCode,
+                        // props.style[3],
+                        currencyCodeStyle,
+                      ]}
+                    >
+                      {code}
+                    </Text>
+                  )}
+                  {showCurrencyName && (
+                    <Text
+                      style={[
+                        styles.txtCountryName,
+                        // props.style[3],
+                        currencyNameStyle,
+                        { maxWidth: "70%", flexWrap: "wrap" },
+                      ]}
+                      numberOfLines={1}
+                    >
+                      {currencyName}
+                    </Text>
+                  )}
+                  {showSymbol && (
+                    <Text
+                      style={[
+                        styles.txtCountryName,
+                        // props.style[3],
+                        symbolStyle,
+                      ]}
+                    >
+                      {symbol}
+                    </Text>
+                  )}
+                  {showNativeSymbol && (
+                    <Text
+                      style={[
+                        styles.txtCountryName,
+                        // props.style[3],
+                        symbolNativeStyle,
+                      ]}
+                    >
+                      {symbolNative}
+                    </Text>
+                  )}
+                </TouchableOpacity>
+              );
+            }}
+          />
+        )
+      ) : null}
+      <Modal visible={visible}>
+        <DialogCurrency
+          language={language}
+          onSelectItem={(data) => {
+            onSelect(data);
+          }}
+          setVisible={(value) => {
+            setVisible(value);
             onClose && onClose();
-        }
-    }
-
-    const onSelect = (data) => {
-        const { code, symbol, symbol_native, name } = data;
-        onSelectCurrency && onSelectCurrency(data);
-        setCurrencyName(name);
-        setCode(code);
-        setSymbol(symbol);
-        setSymbolNative(symbol_native);
-    }
-
-    return (
-        <View>
-            {enable ? <TouchableOpacity
-                onPress={() => { setVisible(true); onOpen && onOpen() }}
-                style={[Styles.justifyContent, container]}
-            >
-                {renderChildren ? renderChildren : <View style={{ flexDirection: "row" }}>
-                    {showFlag && <CurrencyFlag currency={code} width={flagWidth} />}
-                    {showCurrencyCode && <Text style={[styles.txtCurrencyCode, currencyCodeStyle]}>{code}</Text>}
-                    {showCurrencyName && <Text style={[styles.txtCountryName, currencyNameStyle]}>{currencyName}</Text>}
-                    {showSymbol && <Text style={[styles.txtCountryName, symbolStyle]}>{symbol}</Text>}
-                    {showNativeSymbol && <Text style={[styles.txtCountryName, symbolNativeStyle]}>{symbolNative}</Text>}
-                </View>}
-            </TouchableOpacity> : null}
-            <Modal
-                visible={visible}
-            >
-                <DialogCurrency
-                    onSelectItem={(data) => { onSelect(data) }}
-                    setVisible={(value) => { setVisible(value); onClose && onClose(); }}
-                    title={title}
-                    searchPlaceholder={searchPlaceholder}
-                    textEmpty={textEmpty}
-                    darkMode={darkMode}
-                    modalStyle={modalStyle}
-                    showCloseButton={showCloseButton}
-                    showModalTitle={showModalTitle}
-                    showCurrencySymbol={showSymbol}
-                    showCurrencyNativeSymbol={showNativeSymbol}
-                />
-            </Modal>
-        </View>
-    );
+          }}
+          title={title}
+          searchPlaceholder={searchPlaceholder}
+          textEmpty={textEmpty}
+          darkMode={darkMode}
+          modalStyle={modalStyle}
+          showCloseButton={showCloseButton}
+          showModalTitle={showModalTitle}
+          showCurrencySymbol={showSymbol}
+          showCurrencyNativeSymbol={showNativeSymbol}
+        />
+      </Modal>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-    txtCountryName: {
-        ...Styles.fontDefault,
-        marginLeft: 10
-    },
-    txtCurrencyCode: {
-        ...Styles.fontDefault,
-        marginLeft: 10,
-        fontWeight: "600"
-    }
+  txtCountryName: {
+    ...Styles.fontDefault,
+    marginLeft: 10,
+  },
+  txtCurrencyCode: {
+    ...Styles.fontDefault,
+    marginLeft: 10,
+    fontWeight: "600",
+  },
 });

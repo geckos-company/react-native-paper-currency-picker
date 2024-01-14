@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Fuse from 'fuse.js'
 import { Colors } from "../styles";
-import data from "../constants/CommonCurrency.json"
+import data from "../constants/currency.json"
 import { getStyles } from "./styles"
 import { CurrencyFlag } from "./CurrencyFlag";
 
@@ -18,6 +18,7 @@ export const DialogCurrency = (props) => {
     const currencies = Object.values(data);
 
     const {
+        language = 'en',
         onSelectItem,
         title = "Currency",
         searchPlaceholder = "Search",
@@ -62,7 +63,7 @@ export const DialogCurrency = (props) => {
         currencies.reduce(
             (acc, item) => [
                 ...acc,
-                { id: item.code, name: item.name, code: item.code }
+                { id: item.code, name: item.name[language], code: item.code }
             ],
             []
         ),
@@ -85,7 +86,7 @@ export const DialogCurrency = (props) => {
             <View style={[styles.item, itemContainer]}>
                 <CurrencyFlag currency={code} width={flagWidth} />
                 <Text style={[styles.currencyName, currencyCodeStyle]}>{code}</Text>
-                <Text style={[styles.commonName, showSymbol && { width: 120 }, currencyNameStyle]}>{name}</Text>
+                <Text style={[styles.commonName, showSymbol && { width: 120 }, currencyNameStyle]}>{name[language]}</Text>
                 {showCurrencySymbol && <Text style={[styles.commonSymbolCode, symbolStyle]}>{symbol}</Text>}
                 {showCurrencyNativeSymbol && <Text style={[styles.commonSymbolCode, symbolNativeStyle]}>{symbol_native}</Text>}
             </View>
