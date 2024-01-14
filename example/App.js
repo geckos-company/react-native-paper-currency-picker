@@ -13,8 +13,8 @@ export default function App() {
         // }}
         label={'Devise'}
         language={'fr'}
-        enable={true}
-        darkMode={false}
+        // enable={true}
+        // darkMode={true}
         currencyCode={"EUR"}
         showFlag={true}
         showCurrencyName={true}
@@ -30,27 +30,27 @@ export default function App() {
         }}
         showNativeSymbol={true}
         showSymbol={false}
-        containerStyle={{
-          container: {},
-          flagWidth: 25,
-          currencyCodeStyle: {},
-          currencyNameStyle: {},
-          symbolStyle: {},
-          symbolNativeStyle: {},
-        }}
-        modalStyle={{
-          container: {},
-          searchStyle: {},
-          tileStyle: {},
-          itemStyle: {
-            itemContainer: {},
-            flagWidth: 25,
-            currencyCodeStyle: {},
-            currencyNameStyle: {},
-            symbolStyle: {},
-            symbolNativeStyle: {},
-          },
-        }}
+        // containerStyle={{
+        //   container: {},
+        //   flagWidth: 25,
+        //   currencyCodeStyle: {},
+        //   currencyNameStyle: {},
+        //   symbolStyle: {},
+        //   symbolNativeStyle: {},
+        // }}
+        // modalStyle={{
+        //   container: {},
+        //   searchStyle: {},
+        //   tileStyle: {},
+        //   itemStyle: {
+        //     itemContainer: {},
+        //     flagWidth: 25,
+        //     currencyCodeStyle: {},
+        //     currencyNameStyle: {},
+        //     symbolStyle: {},
+        //     symbolNativeStyle: {},
+        //   },
+        // }}
         title={"Currency"}
         searchPlaceholder={"Search"}
         showCloseButton={true}

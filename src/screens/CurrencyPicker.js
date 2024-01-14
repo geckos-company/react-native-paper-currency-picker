@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, TouchableOpacity, Modal } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  useColorScheme,
+} from "react-native";
 import { TextInput, Text } from "react-native-paper";
 import { Styles } from "../styles";
 import currencies from "../constants/currency.json";
@@ -14,7 +20,7 @@ export const CurrencyPicker = (props) => {
     showCurrencyName = true,
     showSymbol = false,
     showNativeSymbol = true,
-    darkMode = true,
+    darkMode,
     renderChildren,
     showCurrencyCode = false,
 
@@ -37,6 +43,8 @@ export const CurrencyPicker = (props) => {
     showModalTitle = true,
   } = props;
 
+  console.log("darkMode", darkMode);
+
   const [currencyName, setCurrencyName] = useState(
     currencies["USD"]["name"][language]
   );
@@ -44,6 +52,8 @@ export const CurrencyPicker = (props) => {
   const [symbol, setSymbol] = useState("$");
   const [symbolNative, setSymbolNative] = useState("$");
   const [visible, setVisible] = useState(false);
+
+  const isDarkMode = useColorScheme() === "dark";
 
   const {
     container,
@@ -112,7 +122,7 @@ export const CurrencyPicker = (props) => {
               />
             }
             render={(props) => {
-              // console.log(props);
+              console.log(props.style[3]);
               return (
                 <TouchableOpacity
                   onPress={() => setVisible(!visible)}
@@ -131,8 +141,8 @@ export const CurrencyPicker = (props) => {
                   {showCurrencyCode && (
                     <Text
                       style={[
+                        props.style[3],
                         styles.txtCurrencyCode,
-                        // props.style[3],
                         currencyCodeStyle,
                       ]}
                     >
@@ -142,8 +152,8 @@ export const CurrencyPicker = (props) => {
                   {showCurrencyName && (
                     <Text
                       style={[
+                        props.style[3],
                         styles.txtCountryName,
-                        // props.style[3],
                         currencyNameStyle,
                         { maxWidth: "70%", flexWrap: "wrap" },
                       ]}
@@ -155,8 +165,8 @@ export const CurrencyPicker = (props) => {
                   {showSymbol && (
                     <Text
                       style={[
+                        props.style[3],
                         styles.txtCountryName,
-                        // props.style[3],
                         symbolStyle,
                       ]}
                     >
@@ -166,8 +176,8 @@ export const CurrencyPicker = (props) => {
                   {showNativeSymbol && (
                     <Text
                       style={[
+                        props.style[3],
                         styles.txtCountryName,
-                        // props.style[3],
                         symbolNativeStyle,
                       ]}
                     >
@@ -193,7 +203,7 @@ export const CurrencyPicker = (props) => {
           title={title}
           searchPlaceholder={searchPlaceholder}
           textEmpty={textEmpty}
-          darkMode={darkMode}
+          darkMode={darkMode || isDarkMode}
           modalStyle={modalStyle}
           showCloseButton={showCloseButton}
           showModalTitle={showModalTitle}
@@ -208,11 +218,15 @@ export const CurrencyPicker = (props) => {
 const styles = StyleSheet.create({
   txtCountryName: {
     ...Styles.fontDefault,
-    marginLeft: 10,
+    marginLeft: 16,
+    minWidth: undefined,
+    paddingHorizontal: 0,
   },
   txtCurrencyCode: {
     ...Styles.fontDefault,
-    marginLeft: 10,
+    marginLeft: 16,
     fontWeight: "600",
+    minWidth: undefined,
+    paddingHorizontal: 0,
   },
 });

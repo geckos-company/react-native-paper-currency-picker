@@ -5,8 +5,8 @@ import {
     StatusBar,
     FlatList,
     TextInput,
-    Text
 } from 'react-native';
+import { Text, useTheme } from "react-native-paper";
 import Fuse from 'fuse.js'
 import { Colors } from "../styles";
 import data from "../constants/currency.json"
@@ -24,7 +24,7 @@ export const DialogCurrency = (props) => {
         searchPlaceholder = "Search",
         textEmpty = "Empty data",
         setVisible,
-        darkMode = true,
+        darkMode = false,
         modalStyle,
         showCloseButton = true,
         showModalTitle = true,
@@ -38,6 +38,8 @@ export const DialogCurrency = (props) => {
     const { itemStyle = {}, container, searchStyle, tileStyle } = modalStyle;
 
     const { itemContainer, flagWidth = 25, currencyCodeStyle, currencyNameStyle, symbolStyle, symbolNativeStyle } = itemStyle;
+
+    const { colors } = useTheme();
 
     useEffect(() => {
         StatusBar.setHidden(true);

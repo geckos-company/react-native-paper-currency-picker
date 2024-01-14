@@ -6,7 +6,6 @@ const DEFAULT_OPTIONS = {
     style: {},
     showFlag: true,
     showCurrencyName: true,
-    darkMode: true
 }
 
 export default CurrencyPicker = (props) => {
