@@ -43,8 +43,6 @@ export const CurrencyPicker = (props) => {
     showModalTitle = true,
   } = props;
 
-  console.log("darkMode", darkMode);
-
   const [currencyName, setCurrencyName] = useState(
     currencies["USD"]["name"][language]
   );
@@ -122,7 +120,6 @@ export const CurrencyPicker = (props) => {
               />
             }
             render={(props) => {
-              console.log(props.style[3]);
               return (
                 <TouchableOpacity
                   onPress={() => setVisible(!visible)}
